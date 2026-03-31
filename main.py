@@ -21,7 +21,7 @@ datefmt=”%H:%M:%S”,
 log = logging.getLogger(“MONARCH”)
 
 async def main():
-log.info(“MONARCH SYSTEM – ZAPUSK”)
+log.info(“MONARCH SYSTEM – START”)
 
 ```
 init_db()
