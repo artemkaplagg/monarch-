@@ -1,6 +1,4 @@
-# main.py — MONARCH BOT
-
-# Точка входа. Чисто. Без мусора.
+# main.py – MONARCH BOT
 
 import asyncio
 import logging
@@ -15,12 +13,6 @@ from models import init_db
 from handlers import router
 from tasks import setup_scheduler
 
-# ─────────────────────────────────────────────
-
-# ЛОГИРОВАНИЕ
-
-# ─────────────────────────────────────────────
-
 logging.basicConfig(
 level=logging.INFO,
 format=”%(asctime)s | %(levelname)s | %(name)s | %(message)s”,
@@ -28,45 +20,32 @@ datefmt=”%H:%M:%S”,
 )
 log = logging.getLogger(“MONARCH”)
 
-# ─────────────────────────────────────────────
-
-# ТОЧКА ВХОДА
-
-# ─────────────────────────────────────────────
-
 async def main():
-log.info(“MONARCH SYSTEM — ЗАПУСК”)
+log.info(“MONARCH SYSTEM – ZAPUSK”)
 
 ```
-# БД — создаём таблицы если нет
-log.info("Инициализация базы данных...")
 init_db()
-log.info("БД готова.")
+log.info("DB ready.")
 
-# Бот
 bot = Bot(
     token=BOT_TOKEN,
     default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN_V2),
 )
 
-# Диспетчер
 dp = Dispatcher(storage=MemoryStorage())
 dp.include_router(router)
 
-# Планировщик
-log.info("Запуск планировщика...")
 scheduler = setup_scheduler(bot, USER_ID, CHANNEL_ID)
 scheduler.start()
-log.info(f"Планировщик активен. Задач: {len(scheduler.get_jobs())}")
+log.info("Scheduler started. Jobs: %d", len(scheduler.get_jobs()))
+log.info("Bot started. USER_ID=%s CHANNEL_ID=%s", USER_ID, CHANNEL_ID)
 
-# Старт
-log.info(f"Бот запущен. USER_ID={USER_ID} | CHANNEL_ID={CHANNEL_ID}")
 try:
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 finally:
     scheduler.shutdown(wait=False)
     await bot.session.close()
-    log.info("MONARCH SYSTEM — ОСТАНОВЛЕН")
+    log.info("MONARCH SYSTEM -- STOPPED")
 ```
 
 if **name** == “**main**”:
